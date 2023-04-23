@@ -555,7 +555,11 @@ impl LightClient {
     }
     pub fn init_logging() -> io::Result<()> {
         // Configure logging first.
-        LOG_INIT.call_once(|| tracing_subscriber::fmt::init());
+        LOG_INIT.call_once(|| {
+            tracing_subscriber::fmt()
+                .with_writer(std::io::stderr)
+                .finish();
+        });
 
         Ok(())
     }
